@@ -116,9 +116,14 @@ function addSubject(semester){ // 절대 건드리지 마세요
 addSubject(0); // node 생성이 아닌 html로 만든 div 항목은 삭제가 안됨
 
 function delSubject(semesterDat){
-	document.getElementById("SM"+semesterDat[2]).removeChild(subjectList[Number(semesterDat[2])][Number(semesterDat.substr(4))]);
-	subjectList[Number(semesterDat[2])][Number(semesterDat.substr(4))] = null;
-	totalN[Number(semesterDat[2])]--;
+	if(totalN[Number(semesterDat[2])] == 1){
+		console.log("학기당 최소 한 과목 있어야 오류 안남");
+	}
+	else {
+		document.getElementById("SM"+semesterDat[2]).removeChild(subjectList[Number(semesterDat[2])][Number(semesterDat.substr(4))]);
+		subjectList[Number(semesterDat[2])][Number(semesterDat.substr(4))] = null;
+		totalN[Number(semesterDat[2])]--;
+	}
 }
 
 function calcGPA(semester){
@@ -127,23 +132,24 @@ function calcGPA(semester){
 	checkRedundancy(semester);
 	for(var i=0;i<subjectN[semester];i++){
 		var grade;
-		if(subjectList[semester][i] != null && 
-			document.getElementById(String(semester) + "_GRD_" + String(i)).value != "base" && 
-			document.getElementById(String(semester) + "_CRD_" + String(i)).value != "base"){
-			switch(document.getElementById(String(semester) + "_GRD_" + String(i)).value){
-				case 'A+':grade=4.5;break;
-				case 'A':grade=4;break;
-				case 'B+':grade=3.5;break;
-				case 'B':grade=3;break;
-				case 'C+':grade=2.5;break;
-				case 'C':grade=2;break;
-				case 'D+':grade=1.5;break;
-				case 'D':grade=1;break;
-				case 'F':grade=0;break;
-				default:grade=0;break;
+		if(subjectList[semester][i] != null) {
+			if(document.getElementById(String(semester) + "_GRD_" + String(i)).value != "base" && 
+				document.getElementById(String(semester) + "_CRD_" + String(i)).value != "base"){
+				switch(document.getElementById(String(semester) + "_GRD_" + String(i)).value){
+					case 'A+':grade=4.5;break;
+					case 'A':grade=4;break;
+					case 'B+':grade=3.5;break;
+					case 'B':grade=3;break;
+					case 'C+':grade=2.5;break;
+					case 'C':grade=2;break;
+					case 'D+':grade=1.5;break;
+					case 'D':grade=1;break;
+					case 'F':grade=0;break;
+					default:grade=0;break;
+				}
+				a += Number(document.getElementById(String(semester) + "_CRD_" + String(i)).value.slice(1)) * grade;
+				b += Number(document.getElementById(String(semester) + "_CRD_" + String(i)).value.slice(1));
 			}
-			a += Number(document.getElementById(String(semester) + "_CRD_" + String(i)).value.slice(1)) * grade;
-			b += Number(document.getElementById(String(semester) + "_CRD_" + String(i)).value.slice(1));
 		}
 	}
 	console.log(a, b);
@@ -161,5 +167,5 @@ $("#SM0").hide();
 $("#INIT").click(function(){
 	$("#SM0").show();
 	$("#INIT").hide();
-	setInterval(function(){for(var i=0;i<semesterN;i++){calcGPA(i);}},500);
+	setInterval(function(){for(var i=0;i<semesterN;i++){calcGPA(i);}},10);
 });
