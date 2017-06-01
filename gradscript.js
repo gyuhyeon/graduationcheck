@@ -1,4 +1,4 @@
-/* 드롭다운 리스트 내부의 항목 (교과목) */
+﻿/* 드롭다운 리스트 내부의 항목 (교과목) */
 var not_selected = "not_selected";
 var direct_input = "직접입력";
 var subject_section = {
@@ -163,3 +163,6 @@ $("#INIT").click(function(){
 	$("#INIT").hide();
 	setInterval(function(){for(var i=0;i<semesterN;i++){calcGPA(i);}},500);
 });
+
+//서한승주석추가
+/*과제_주석 추가_조한빛*/
